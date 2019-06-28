@@ -45,7 +45,7 @@ Mat hough_lines_acc(Mat &edgeImage, Mat &originalImage)
 		}
 	}
 
-	threshold(hough_image, hough_image, 100, 1.0, CV_THRESH_BINARY);
+	threshold(hough_image, hough_image, 70, 1.0, CV_THRESH_BINARY);
 	vector<Point> peak_locs;
 	findNonZero(hough_image, peak_locs);
 

@@ -65,14 +65,49 @@ int main()
 	Mat mono_q4 = imread("./input/ps1-input1.png", CV_LOAD_IMAGE_GRAYSCALE);
 	Mat rgb_q4 = imread("./input/ps1-input1.png", CV_LOAD_IMAGE_COLOR);
 	imshow("Q4 Original", mono_q4);
-	waitKey(0);
+	//waitKey(0);
 
 	GaussianBlur(mono_q4, mono_q4, Size(15, 15), 2.0, 2.0);
+	high_threshold = 80;
+	ratio = 5;
+	low_threshold = high_threshold / ratio;
+	kernel_size = 3;
+	Canny(mono_q4, mono_q4, low_threshold, high_threshold, kernel_size);
+
+	// NON-Q - Testing on Cube Images from MECH 423
+	Mat mono_cube = imread("./input/cube_original.png", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat rgb_cube = imread("./input/cube_original.png", CV_LOAD_IMAGE_COLOR);
+
+	GaussianBlur(mono_cube, mono_cube, Size(7,7), 2.0, 2.0);
+	imshow("Blur Cube", mono_cube);
+
 	high_threshold = 80;
 	ratio = 4;
 	low_threshold = high_threshold / ratio;
 	kernel_size = 3;
-	Canny(mono_q4, mono_q4, low_threshold, high_threshold, kernel_size);
+	Canny(mono_cube, mono_cube, low_threshold, high_threshold, kernel_size);
+	imshow("Edge Cube", mono_cube);
+
+	Mat lines_cube = hough_lines_acc(mono_cube, rgb_cube);
+	imshow("Cube Lines", lines_cube);
+	waitKey(0);
+
+	Mat mono_cube_r = imread("./input/cube_render.png", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat rgb_cube_r = imread("./input/cube_render.png", CV_LOAD_IMAGE_COLOR);
+
+	GaussianBlur(mono_cube_r, mono_cube_r, Size(21, 21), 2.0, 2.0);
+	imshow("Blur Cube Render", mono_cube_r);
+
+	high_threshold = 80;
+	ratio = 3;
+	low_threshold = high_threshold / ratio;
+	kernel_size = 3;
+	Canny(mono_cube_r, mono_cube_r, low_threshold, high_threshold, kernel_size);
+	imshow("Edge Cube Render", mono_cube_r);
+
+	Mat lines_cube_2 = hough_lines_acc(mono_cube_r, rgb_cube_r);
+	imshow("Cube Lines Render", lines_cube_2);
+	waitKey(0);
 
 	//imshow("Q4 Edges", mono_q4);
 	//waitKey(0);
